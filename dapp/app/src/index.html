@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Breitlex NFT Smart Contract - For Breitlex Watch Manufacturer</title>
+  </head>
+  <style>
+    input {
+      display: block;
+      margin-bottom: 12px;
+    }
+  </style>
+  <body>
+
+    <div class="p-1 mb-1 bg-light bg-gradient rounded-3">
+      <div class="container-fluid py-3">
+        <h1 class="display-7 fw-bold">BreitLex Smart Contract</h1>
+        <p class="col-md-8 fs-4">This is Breitlex's Distributed App</p>
+        <div class="row">
+          <div class="col-8">
+            <div class="input-group input-group-lg">
+              <input type="text" class="form-control" placeholder="Enter NFT contract address or leave blank to deploy a new one" id="txt-contract-address">
+            </div>
+          </div>
+          <div class="col-4">
+            <a tabindex="0"  class="btn btn-primary btn-lg" onclick="App.btnGo()" 
+            type="button" id="btn-Deploy"
+            data-bs-toggle="popover" title="Error" 
+            data-bs-content="Smart Contract Not Found"
+            data-bs-trigger="manual">
+              Go
+            </a>
+            <div class="spinner-border spinner-border-sm d-none" role="status" id="spn-load">
+              <span class="sr-only"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid py-2 d-none" id="con-contract">
+      <div class="row">
+        <div class="col-6">
+          <ul class="list-group">
+            <li class="list-group-item"><span class="fw-bold">Address: </span><span id="lbl-contract-address"></span></span></li>
+            <li class="list-group-item"><span class="fw-bold">Owner's Wallet: </span><span id="lbl-owner-address"></span></li>
+            <li class="list-group-item"><span class="fw-bold">Name: </span><span id="lbl-name"></li>
+            <li class="list-group-item"><span class="fw-bold">Symbol: </span><span id="lbl-symbol"></span></li>
+          </ul>
+        </div>
+        <div class="col-3">
+          <div class="card">
+              <div class="card-header fw-bold text-center">Total Supply</div>
+              <div class="card-body">
+              <p class="card-text text-center"><span class="fs-1" id="lbl-total-supply"></span></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="card">
+              <div class="card-header fw-bold text-center">Token ID</div>
+                <div class="card-body text-center">
+                  <input type="text" class="form-control text-center" placeholder="Enter Token ID e.g. 0" value="0" id="txt-token-id" required>
+                  <br/>
+                  <button class="btn btn-primary btn-lg text-center" type="button" id="btn-View-Token" onclick="App.btnViewToken()">View</button>
+                </div>
+          </div>
+        </div>
+      </div>
+
+      <br />
+
+    <div class="row">
+      <div class="col-auto">
+        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#mintModal" id="btn-Mint">Mint</button>
+      </div>
+    </div>
+
+    <div class="container-fluid py-2 d-none" id="con-token">
+      <div class="row">
+        <div>
+          <ul class="list-group">
+            <li class="list-group-item"><span class="fw-bold">Owner: </span>
+              <span id="lbl-token-owner"></span></span>
+              <button class="btn btn-primary btn-sm text-center d-none" type="button" id="btn-Transfer-Token" data-bs-toggle="modal" data-bs-target="#transferModal">Transfer</button>
+            </li>
+            <li class="list-group-item"><span class="fw-bold">Model: </span><span id="lbl-token-model"></span></span></li>
+            <li class="list-group-item"><span class="fw-bold">Manufactured Date: </span><span id="lbl-token-manufactured-date"></span></li>
+            <li class="list-group-item"><span class="fw-bold">Serial Number: </span><span id="lbl-token-serial-number"></li>
+            <li class="list-group-item"><img src="" id="img-token-picture" width="500"></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transfer modal -->
+    <div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="trasferModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="scheduleModalLabel">Transfer To</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="Transfer-Form" onsubmit="return false">
+          <div class="modal-body">
+              <div class="mb-3">
+                <label for="txt-model" class="col-form-label">Recipient</label>
+                <input type="text" class="form-control" placeholder="Enter Recipient Address" value="" id="txt-transfer-address" required>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="btn-transfer" onclick="App.btnTransferToken()">Go</button>
+            <div class="spinner-border spinner-border-sm d-none" role="status" id="spn-transfer"></div>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Mint modal -->
+    <div class="modal fade" id="mintModal" tabindex="-1" aria-labelledby="mintModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="scheduleModalLabel">New BNFT Token</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="Mint-Form" onsubmit="return false">
+          <div class="modal-body">
+              <div class="mb-3">
+                <label for="txt-model" class="col-form-label">Model</label>
+                <input type="text" class="form-control" placeholder="Enter Model e.g. Sub-Timer" value="Sub-Timer" id="txt-model" required>
+              </div>
+              <div class="mb-3">
+                <label for="txt-manufactured-date" class="col-form-label">Manufactured Date</label>
+                <input type="date" class="form-control" placeholder="Enter Manufactured Date" value="2021-08-25" id="txt-manufactured-date" required>
+              </div>
+              <div class="mb-3">
+                <label for="txt-serial-number" class="col-form-label">Serial Number</label>
+                <input type="text" min="0" step="any" class="form-control" id="txt-serial-number" value="15634BN322" placeholder="Enter serial number" required>
+              </div>
+              <div class="form-group">
+                <label for="file-watchpic">Watch Picture (< 1MB) </label>
+                <input type="file" class="form-control-file" id="file-watchpic" required>
+                <br />
+                <div class="alert alert-danger d-none" role="alert" id="file-size-alert">
+                  Keep file size below 1MB
+                </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="btn-mint" onclick="App.btnMint()">Go</button>
+            <div class="spinner-border spinner-border-sm d-none" role="status" id="spn-mint"></div>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
