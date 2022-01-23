@@ -24,6 +24,7 @@ const App = {
   uiSpnLoad:null,
   uiSpnMint: null,
   uiSpnTransfer: null,
+  uiSpnAuthorize: null,
   uiConContract:null,
   uiSpnContractAction: null,
   uiLblContractAddress:null,
@@ -42,6 +43,11 @@ const App = {
   uiTxtTokenId: null,
   uiBtnTransferToken: null,
   uiTxtTransferToken: null,
+  uiBtnAuthorizeEscrow: null,
+  uiTxtAuthorizeEscrow: null,
+  
+  
+
 
   start: async function() {
     const { web3 } = this;
@@ -101,7 +107,23 @@ const App = {
       this.utilGetTokenDetails(this.currentToken);
       this.uiSpnTransfer.classList.add('d-none');
     });
+  },
 
+  btnAuthorizeEscrow: async function(){
+    this.uiTxtAuthorizeEscrow = document.getElementById("txt-authorize-address");
+    console.log(this.uiTxtAuthorizeEscrow.value);
+    console.log(this.currentToken);
+
+    this.uiSpnAuthorize = document.getElementById("spn-authorize");
+    this.uiSpnAuthorize.classList.remove('d-none');
+
+    this.breitlexNFTContract.methods.approve(this.uiTxtAuthorizeEscrow.value, this.currentToken).send({from: this.account})
+    .then((result) =>{
+      App.AuthorizeModal = Modal.getInstance(document.getElementById('AuthorizeModal'));
+      App.AuthorizeModal.hide();
+      this.utilGetTokenDetails(this.currentToken);
+      this.uiSpnAuthorize.classList.add('d-none');
+    });
   },
 
   btnMint: async function(){
@@ -226,10 +248,16 @@ const App = {
           if (result === this.account){
             this.uiBtnTransferToken = document.getElementById("btn-Transfer-Token");
             this.uiBtnTransferToken.classList.remove('d-none');
+
+            this.uiBtnAuthorizeEscrow = document.getElementById("btn-Authorize-Escrow");
+            this.uiBtnAuthorizeEscrow.classList.remove('d-none');
           }
           else{
             this.uiBtnTransferToken = document.getElementById("btn-Transfer-Token");
-            this.uiBtnTransferToken.classList.add('d-none');           
+            this.uiBtnTransferToken.classList.add('d-none');      
+          
+            this.uiBtnAuthorizeEscrow = document.getElementById("btn-Authorize-Escrow");
+            this.uiBtnAuthorizeEscrow.classList.add('d-none');   
           }
 
           //Show the model, manufactured date, serila number

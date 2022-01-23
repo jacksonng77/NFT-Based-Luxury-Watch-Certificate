@@ -82,6 +82,7 @@
             <li class="list-group-item"><span class="fw-bold">Owner: </span>
               <span id="lbl-token-owner"></span></span>
               <button class="btn btn-primary btn-sm text-center d-none" type="button" id="btn-Transfer-Token" data-bs-toggle="modal" data-bs-target="#transferModal">Transfer</button>
+              <button class="btn btn-primary btn-sm text-center d-none" type="button" id="btn-Authorize-Escrow" data-bs-toggle="modal" data-bs-target="#AuthorizeModal">Authorize Escrow</button>
             </li>
             <li class="list-group-item"><span class="fw-bold">Model: </span><span id="lbl-token-model"></span></span></li>
             <li class="list-group-item"><span class="fw-bold">Manufactured Date: </span><span id="lbl-token-manufactured-date"></span></li>
@@ -117,6 +118,30 @@
       </div>
     </div>
 
+    <!-- Authorize modal -->
+    <div class="modal fade" id="AuthorizeModal" tabindex="-1" aria-labelledby="AuthorizeModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="AuthorizeModalLabel">Authorize Escrow Contract</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="Transfer-Form" onsubmit="return false">
+          <div class="modal-body">
+              <div class="mb-3">
+                <label for="txt-model" class="col-form-label">Contract Address</label>
+                <input type="text" class="form-control" placeholder="Enter Escrow Contract Address" value="" id="txt-authorize-address" required>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="btn-authorize" onclick="App.btnAuthorizeEscrow()">Go</button>
+            <div class="spinner-border spinner-border-sm d-none" role="status" id="spn-authorize"></div>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
 
     <!-- Mint modal -->
     <div class="modal fade" id="mintModal" tabindex="-1" aria-labelledby="mintModalLabel" aria-hidden="true">
