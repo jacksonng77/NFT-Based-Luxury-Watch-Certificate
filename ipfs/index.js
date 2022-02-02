@@ -12,7 +12,7 @@ const cors=require("cors");
 
 app.use(cors({
   credentials: true,
-  origin: "http://localhost:8080"
+  origin: ["http://localhost:8080", "https://jacksonng.org"]
 }));
 
 app.post('/nftwrite', upload.single('image'), function (req, res, next) {
